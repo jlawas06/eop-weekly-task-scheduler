@@ -1,5 +1,6 @@
 services:
   eop:
+    container_name: eop
     build:
       context: .
       dockerfile: Dockerfile
