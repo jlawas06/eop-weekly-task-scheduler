@@ -8,10 +8,10 @@
 	let currentPath = $derived(page.url.pathname);
 
 	// Mobile menu state
-	let mobileMenuOpen = false;
-	const toggleMobileMenu = () => {
+	let mobileMenuOpen = $state(false);
+	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
-	};
+	}
 </script>
 
 <div class="min-h-screen bg-gray-100">
@@ -36,7 +36,7 @@
 				</div>
 				<!-- Mobile menu button -->
 				<div class="flex items-center sm:hidden">
-					<button on:click={toggleMobileMenu} type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
+					<button onclick={toggleMobileMenu} type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
 						<span class="sr-only">Open main menu</span>
 						<!-- Icon when menu is closed -->
 						<svg class={!mobileMenuOpen ? 'block h-6 w-6' : 'hidden h-6 w-6'} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -55,13 +55,13 @@
 		{#if mobileMenuOpen}
 			<div class="sm:hidden">
 				<div class="pt-2 pb-3 space-y-1">
-					<a href="/" class="{currentPath === '/' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+					<a href="/" onclick={() => mobileMenuOpen = false} class="{currentPath === '/' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
 						Home
 					</a>
-					<a href="/today" class="{currentPath === '/today' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+					<a href="/today" onclick={() => mobileMenuOpen = false} class="{currentPath === '/today' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
 						Today's Tasks
 					</a>
-					<a href="/schedule" class="{currentPath === '/schedule' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+					<a href="/schedule" onclick={() => mobileMenuOpen = false} class="{currentPath === '/schedule' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
 						Weekly Schedule
 					</a>
 				</div>
