@@ -1,13 +1,13 @@
-import { PB_EMAIL, PB_PW, PB_URL } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import PocketBase from "pocketbase";
 
 
 
 const initializePocketbase = async () => {
-	const client = new PocketBase(PB_URL);
+	const client = new PocketBase(env.PB_URL);
 	client.autoCancellation(false);
 	
-	await client.collection("_superusers").authWithPassword(PB_EMAIL, PB_PW, {
+	await client.collection("_superusers").authWithPassword(env.PB_EMAIL, env.PB_PW, {
 		autoRefreshThreshold: 30 * 60,
 	});
 	
