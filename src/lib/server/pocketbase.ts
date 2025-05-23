@@ -1,13 +1,13 @@
-import { VITE_PB, VITE_PB_EMAIL, VITE_PB_PW } from "$env/static/private";
+import { PB_EMAIL, PB_PW, PB_URL } from "$env/static/private";
 import PocketBase from "pocketbase";
 
 
 
 const initializePocketbase = async () => {
-	const client = new PocketBase(VITE_PB);
+	const client = new PocketBase(PB_URL);
 	client.autoCancellation(false);
 	
-	await client.collection("_superusers").authWithPassword(VITE_PB_EMAIL, VITE_PB_PW, {
+	await client.collection("_superusers").authWithPassword(PB_EMAIL, PB_PW, {
 		autoRefreshThreshold: 30 * 60,
 	});
 	
