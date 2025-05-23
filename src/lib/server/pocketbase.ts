@@ -1,7 +1,7 @@
 import { env } from "$env/dynamic/private";
 import PocketBase from "pocketbase";
 
-
+let pocketbaseAdminClient: PocketBase | null = null;
 
 const initializePocketbase = async () => {
 	const client = new PocketBase(env.PB_URL);
@@ -14,7 +14,12 @@ const initializePocketbase = async () => {
 	return client;
 };
 
-const pocketbaseAdminClient = await initializePocketbase();
+const getPocketbaseAdminClient = async () => {
+	if (!pocketbaseAdminClient) {
+		pocketbaseAdminClient = await initializePocketbase();
+	}
+	return pocketbaseAdminClient;
+};
 
-export { pocketbaseAdminClient };
+export { getPocketbaseAdminClient };
 
