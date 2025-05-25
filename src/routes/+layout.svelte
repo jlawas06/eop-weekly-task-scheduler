@@ -32,6 +32,9 @@
 						<a href="/schedule" class="{currentPath === '/schedule' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
 							Weekly Schedule
 						</a>
+						<a href="/all-schedules" class="{currentPath === '/all-schedules' ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+							All Schedules
+						</a>
 					</nav>
 				</div>
 				<!-- Mobile menu button -->
@@ -63,6 +66,9 @@
 					</a>
 					<a href="/schedule" onclick={() => mobileMenuOpen = false} class="{currentPath === '/schedule' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
 						Weekly Schedule
+					</a>
+					<a href="/all-schedules" onclick={() => mobileMenuOpen = false} class="{currentPath === '/all-schedules' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+						All Schedules
 					</a>
 				</div>
 			</div>

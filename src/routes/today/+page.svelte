@@ -11,7 +11,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch('/api/get-current-week-schedule');
+            const response = await fetch('/api/get-schedule');
             const result = await response.json();
             currentWeekSchedule = result.tasks;
             todaySchedule = currentWeekSchedule.week.find(day => day.day === today);
