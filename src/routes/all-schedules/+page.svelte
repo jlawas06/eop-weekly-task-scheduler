@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatDate } from '$lib/utils/dateUtils';
     import { onMount } from 'svelte';
     
     interface DaySchedule {
@@ -38,35 +39,36 @@
         }
     });
 
-    function formatDate(dateString: string): string {
-        // Extract just the date part (YYYY-MM-DD) from the UTC datetime string
-        if (!dateString) return '';
-        
-        // If it contains 'T', split and take the date part
-        if (dateString.includes('T')) {
-            return dateString.split('T')[0];
-        }
-        
-        // If it contains a space (like "2025-05-26 00:00:00.000Z"), split on space
-        if (dateString.includes(' ')) {
-            return dateString.split(' ')[0];
-        }
-        
-        // If it's already just a date, return as is
-        return dateString;
-    }
-
     function getScheduleStatus(startDate: string, endDate: string): ScheduleStatus {
         // Get current local date (just the date part, no time)
         const now = new Date();
         const currentLocalDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        
+        // Extract date parts from the datetime strings
+        let startDateOnly = startDate;
+        let endDateOnly = endDate;
+        
+        if (startDate.includes('T')) {
+            startDateOnly = startDate.split('T')[0];
+        }
+        if (startDate.includes(' ')) {
+            startDateOnly = startDate.split(' ')[0];
+        }
+        if (endDate.includes('T')) {
+            endDateOnly = endDate.split('T')[0];
+        }
+        if (endDate.includes(' ')) {
+            endDateOnly = endDate.split(' ')[0];
+        }
+        
         // Parse UTC dates from PocketBase and convert to local date (just date part)
-        const startUTC = new Date(formatDate(startDate));
-        const endUTC = new Date(formatDate(endDate));
+        const startUTC = new Date(startDateOnly);
+        const endUTC = new Date(endDateOnly);
         
         // Convert UTC dates to local dates (just the date part, no time)
         const startLocalDate = new Date(startUTC.getFullYear(), startUTC.getMonth(), startUTC.getDate());
         const endLocalDate = new Date(endUTC.getFullYear(), endUTC.getMonth(), endUTC.getDate());
+        
         if (currentLocalDate >= startLocalDate && currentLocalDate <= endLocalDate) {
             return 'current';
         } else if (currentLocalDate > endLocalDate) {

@@ -1,6 +1,7 @@
 <script lang="ts">
+    import { formatDate } from '$lib/utils/dateUtils';
     import type { PageData } from './$types';
-    
+        
     export let data: PageData;
     
     const chores = ['Sweep the floor', 'Cook Dinner', 'Cook Rice', 'Clean the Table', 'Throw the garbage', 'Wash the dishes'];
@@ -9,6 +10,10 @@
     $: loading = false; // Data is loaded server-side
     $: error = data.error;
     $: scheduleId = data.scheduleId;
+    
+    $: schedulePeriod = data.schedule?.date_start && data.schedule?.date_end 
+        ? `${formatDate(data.schedule.date_start)} - ${formatDate(data.schedule.date_end)}`
+        : null;
 </script>
 
 <svelte:head>
@@ -19,7 +24,12 @@
     <div class="max-w-[95%] mx-auto">
         <div class="flex justify-between items-center mb-8">
             <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Weekly Task Schedule</h1>
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Weekly Task Schedule</h1>
+                    {#if schedulePeriod}
+                        <span class="text-lg md:text-xl text-blue-600 font-medium">({schedulePeriod})</span>
+                    {/if}
+                </div>
                 {#if scheduleId}
                     <p class="text-sm text-gray-600 mt-1">Viewing specific schedule (ID: {scheduleId})</p>
                     <a href="/schedule" class="text-sm text-blue-600 hover:text-blue-800 underline">← Back to current schedule</a>
