@@ -158,7 +158,8 @@
                 </div>
             </div>
         {:else}
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Desktop Table View -->
+            <div class="hidden md:block bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
@@ -228,6 +229,56 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden space-y-4">
+                {#each allSchedules as schedule, index}
+                    {@const status = getScheduleStatus(schedule.date_start, schedule.date_end)}
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">
+                                    Week {allSchedules.length - index}
+                                </h3>
+                                <p class="text-sm text-gray-500">
+                                    {formatDate(schedule.date_start)} - {formatDate(schedule.date_end)}
+                                </p>
+                            </div>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {getStatusBadge(status)}">
+                                {getStatusText(status)}
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Start Date</p>
+                                <p class="text-sm text-gray-900">{formatDate(schedule.date_start)}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">End Date</p>
+                                <p class="text-sm text-gray-900">{formatDate(schedule.date_end)}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Days</p>
+                                <p class="text-sm text-gray-900">{getDaysCount(schedule)}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Members</p>
+                                <p class="text-sm text-gray-900">{getTotalMembers(schedule)}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-gray-200">
+                            <a 
+                                href="/schedule?id={schedule.id}" 
+                                class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                            >
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                {/each}
             </div>
         {/if}
     </div>
