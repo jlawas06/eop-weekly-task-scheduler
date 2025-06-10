@@ -7,7 +7,6 @@
     const chores = ['Sweep the floor', 'Cook Dinner', 'Cook Rice', 'Clean the Table', 'Throw the garbage', 'Wash the dishes'];
     
     $: currentWeekSchedule = data.schedule?.tasks || null;
-    $: loading = false; // Data is loaded server-side
     $: error = data.error;
     $: scheduleId = data.scheduleId;
     
@@ -38,20 +37,8 @@
                 {/if}
             </div>
         </div>
-        
-        {#if loading}
-            <div class="flex flex-col items-center justify-center h-64 bg-white rounded-xl shadow-lg p-6">
-                <div class="flex space-x-2 mb-4">
-                    <div class="w-4 h-4 rounded-full bg-blue-600 animate-bounce" style="animation-delay: 0s"></div>
-                    <div class="w-4 h-4 rounded-full bg-blue-500 animate-bounce" style="animation-delay: 0.1s"></div>
-                    <div class="w-4 h-4 rounded-full bg-blue-400 animate-bounce" style="animation-delay: 0.2s"></div>
-                </div>
-                <p class="text-xl text-gray-600 font-medium">Loading your schedule</p>
-                <div class="mt-4 w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-blue-600 to-blue-400 animate-pulse"></div>
-                </div>
-            </div>
-        {:else if error}
+
+        {#if error}
             <div class="flex justify-center items-center h-64">
                 <div class="text-xl text-red-600">{error}</div>
             </div>
@@ -120,6 +107,21 @@
                     </div>
                 {/each}
             </div>
+
+            <!-- Special Tasks Section -->
+            {#if currentWeekSchedule?.special_tasks && currentWeekSchedule.special_tasks.length > 0}
+                <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Special Tasks (Sunday Only)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {#each currentWeekSchedule.special_tasks as specialTask}
+                            <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                                <div class="font-medium text-blue-800">{specialTask.name}</div>
+                                <div class="text-gray-600 mt-1">{specialTask.task}</div>
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+            {/if}
         {/if}
     </div>
 </div>

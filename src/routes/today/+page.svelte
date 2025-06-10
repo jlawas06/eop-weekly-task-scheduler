@@ -1,20 +1,45 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     
+    interface Member {
+        name: string;
+        chore: string;
+    }
+
+    interface DaySchedule {
+        day: string;
+        members_off: string[];
+        members_on_duty: Member[];
+    }
+
+    interface SpecialTask {
+        name: string;
+        task: string;
+    }
+
+    interface WeekSchedule {
+        week: DaySchedule[];
+        special_tasks?: SpecialTask[];
+    }
+    
     // Get the current day of the week
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const today = days[new Date().getDay()];
     
-    let currentWeekSchedule = null;
+    let currentWeekSchedule: WeekSchedule | null = null;
     let loading = true;
-    let todaySchedule = null;
+    let todaySchedule: DaySchedule | null = null;
+    let specialTasks: SpecialTask[] | null = null;
 
     onMount(async () => {
         try {
             const response = await fetch('/api/get-schedule');
             const result = await response.json();
             currentWeekSchedule = result.tasks;
-            todaySchedule = currentWeekSchedule.week.find(day => day.day === today);
+            if (currentWeekSchedule) {
+                todaySchedule = currentWeekSchedule.week.find((day: DaySchedule) => day.day === today) || null;
+                specialTasks = currentWeekSchedule.special_tasks || null;
+            }
         } catch (error) {
             console.error('Failed to load schedule:', error);
         } finally {
@@ -77,6 +102,26 @@
                 {:else}
                     <div class="p-4 sm:p-8 text-center">
                         <p class="text-lg text-gray-700">Schedule not found for {today}.</p>
+                    </div>
+                {/if}
+
+                {#if today === 'Sunday' && specialTasks && specialTasks.length > 0}
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Special Tasks</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                            {#each specialTasks as specialTask}
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-blue-50 border border-blue-100 hover:bg-blue-100 transition">
+                                    <div class="flex flex-col mb-2 sm:mb-0">
+                                        <span class="font-medium text-gray-800">{specialTask.task}</span>
+                                        <span class="text-xs sm:text-sm text-gray-500">Special Task</span>
+                                    </div>
+                                    <div class="self-end sm:self-auto sm:text-right">
+                                        <span class="text-blue-600 font-bold">{specialTask.name}</span>
+                                        <div class="text-xs sm:text-sm text-gray-500">Assigned To</div>
+                                    </div>
+                                </div>
+                            {/each}
+                        </div>
                     </div>
                 {/if}
             </div>
